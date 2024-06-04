@@ -83,6 +83,38 @@ class Graph {
 
     return answer;
   }
+
+  shortestPath(source, target){
+    let queue = [source];
+    let seen = new Set(queue);
+    let parent = {};
+    let answer = []
+
+    while (queue.length) {
+      let currNode = queue.shift();
+
+      if (currNode === target) {
+        let node = currNode;
+        while (node !== source) {
+          answer.push(node.value);
+          node = parent[node.value];
+        }
+        answer.push(source.value);
+        return answer.reverse();
+      }
+
+      for (let node of currNode.adjacent) {
+        if (!seen.has(node)) {
+          seen.add(node);
+          parent[node.value] = currNode;
+          queue.push(node);
+        }
+      }
+    }
+
+    return answer;
+    
+  }
 }
 
 module.exports = { Graph, Node };
